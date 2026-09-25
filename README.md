@@ -2,7 +2,7 @@
 
 # Goodnight Alchemist
 
-**A Claude Code skill for handing your project over at bedtime and finding it shipped in the morning — as far as you allowed, and proven.**
+**Your Claude subscription resets whether you use it or not. Goodnight Alchemist turns the hours you're asleep into shipped work — hand your project over at bedtime, find it shipped by morning, as far as you allowed, and proven.**
 
 You say goodnight, and how long it may run. One master agent takes the brief, builds a backlog, and works it in batches — subagents implementing in parallel, then a review gate, then one fix round, then tests and a commit. Then it ships the batch as far as you allowed — a pushed branch by default, a pull request, or live — and checks, against that exact commit, that it really got there. Then the next batch. By morning there is a report: what shipped and how far, what it decided for you while you slept, and a checklist of what still needs your hands.
 
@@ -20,11 +20,15 @@ you: "goodnight alchemist — take it live, stop at 7am"
 
 ## Why this exists
 
-Agents already write code unattended. What they do badly is *run out of budget in the middle of it*.
+**You're paying for capacity you don't use.** A Claude subscription gives you usage on a rolling window — a few hours at a time, plus a weekly allowance — and it resets whether you touched it or not. Unless you work flat out, most windows end with capacity left over, and none of it carries forward. Walk away from your desk and the window you were in expires half-used; the next one starts from zero. The hours you're asleep, in meetings or on the road are the ones that go by untouched — and you've paid for every one of them.
+
+The obvious answer is to leave an agent running overnight. It doesn't work on its own, because agents are bad at exactly what a night demands: they write code unattended just fine, but they *run out of budget in the middle of it*.
 
 A long autonomous session dies the same way every time: the usage window empties mid-edit, the turn is killed, half-written files sit in the working tree, dispatched subagents are orphaned — and the whole thing waits for a human to come back and press something. You wake up to a mess plus four wasted hours.
 
-This skill treats the usage limit as a scheduling problem instead of an accident. It measures what its own work costs, sizes each batch to fit the budget actually remaining, and refuses to start anything it cannot finish. When the room runs out it parks deliberately — ledger written, work committed, hooks armed — and picks itself back up after the window resets. The night flows across resets instead of breaking on them.
+This skill treats the usage limit as a scheduling problem instead of an accident. It measures what its own work costs, sizes each batch to fit the budget actually remaining, and refuses to start anything it cannot finish. When the room runs out it parks deliberately — ledger written, work committed, hooks armed — and picks itself back up after the window resets. The night flows across resets instead of breaking on them, and capacity that would have expired becomes shipped work.
+
+It stays inside your plan's limits — it never works around them. It just stops them expiring unused. (On pay-per-token billing nothing expires, so there the value is simply a productive night; the skill paces by a dollar ceiling instead.)
 
 The second thing it does is **stop**. An agent that can work unattended for eight hours can also burn a week's budget by lunchtime if nobody comes back. The deadline is asked for up front and enforced by every component.
 
