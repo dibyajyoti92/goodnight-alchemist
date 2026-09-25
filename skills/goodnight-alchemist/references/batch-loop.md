@@ -1,17 +1,19 @@
 # The batch loop: fan out, review, fix, ship
 
 A batch is the unit of the night: **N parallel tasks → one review gate → one
-fix round → gates → ship**. It ends with working software pushed and published,
-so whenever the run is cut off — usage limit, crash, morning — nothing is
+fix round → gates → ship**. It ends with working software at its ceiling and
+proven — shipped as far as tonight's ship ceiling allows, proven by its commit
+SHA — so whenever the run is cut off (usage limit, crash, morning) nothing is
 half-finished.
 
 **N is derived, never assumed.** `references/keepalive.md` §2 measures what a
 task costs on this plan from the run's own first batch, and sizes every later
-batch from the room left in the tightest window: `clamp(floor(room × 0.6 /
-cost_per_task), 1, 6)`. On a large plan that lands at 5–6 tasks and eight
+batch from the room left in the tightest window: `min(6, floor(room × 0.6 /
+cost_per_task))`. On a large plan that lands at 5–6 tasks and eight
 batches a night; on a small one it lands at 1–2 tasks and three or four
 batches, with the same structure and the same guarantee. A one-task batch is a
-legitimate batch — it still gets a review, still ships.
+legitimate batch — it still gets a review, still ships; zero is not — park or
+wrap up (keepalive.md §2–§3).
 
 Sizing levers, in the order to pull them when a batch does not fit: drop to one
 reviewer, route mechanical tasks to a cheaper model, cut tasks. Never drop the
@@ -27,8 +29,14 @@ failure that cannot be fixed in the morning.
   keeps the batch shippable even if the big one has to be dropped.
 - **Nothing that needs the user.** If a task's acceptance criteria contain a
   product question, it belongs in *Pending on you*, not in a batch.
-- **Backend/paid work gets its own single message** at the end of the batch,
-  never one message per task.
+- **A production-state change is a modifier on the batch, not a task.**
+  Migrations, grants/RLS, storage, functions, secrets and messages to a
+  builder's agent (e.g. Lovable): only when the grant names backend or
+  credits, at most one per batch, reviewed with the batch and sent as one
+  message at its end — never one per task. Log it in the ledger
+  (`<time> prod-state sent: <summary>, unverified`) before sending, and verify
+  by querying afterwards; any session that finds an unverified send queries
+  whether it landed and never resends.
 
 ## Fanning out with the `Workflow` tool
 
@@ -74,7 +82,10 @@ cache; only the dead stage and everything after it re-runs. Never re-run a
 whole batch to recover one agent.
 
 For two or three tasks, plain parallel `Agent` calls in one message are
-cheaper than a workflow. Use a workflow when the batch has stages.
+cheaper than a workflow. Use a workflow when the batch has stages. Use `Agent`
+calls too when `Workflow` is missing or its launch is denied (the Harness
+line's fan-out says which); there is no `resumeFromRunId` then, so when one
+agent dies, re-run only the dead task.
 
 ## Implementer prompt skeleton
 
@@ -112,10 +123,12 @@ compare against `git show HEAD:<file>` for every changed file. Findings only,
 each with file:line and the criterion it violates. Do not edit anything."
 
 **Code quality.** "Real defects only, each with a concrete failure scenario:
-inputs or state → wrong output, crash or leak. Look for stale closures, hook
-order, unhandled rejections, data shown as zero when a load failed, permission
-or tenancy leaks, unbounded loops over user data, layout at 375px. No style
-opinions, no speculative refactors. Do not edit anything."
+inputs or state → wrong output, crash or leak. Look for unhandled errors and
+rejections, data shown as zero or empty when a load failed, permission or
+tenancy leaks, unbounded loops over user data, injection — plus <the project
+notes' Review focus>. (On a web UI, for example: stale closures, hook order,
+layout at 375px.) No style opinions, no speculative refactors. Do not edit
+anything."
 
 Both reviewers return structured findings. The master ranks them, discards the
 ones it can disprove by reading the code, and turns the rest into numbered fix
@@ -130,5 +143,5 @@ instructions grouped by file owner.
 3. **Log silent caps.** If you dropped a task, sampled instead of covering, or
    skipped a review, it goes in the ledger and the morning report. An
    unreported cap reads as "covered everything".
-4. **Ship before the next batch.** The ledger row is not done until the commit
-   is pushed, published and probed.
+4. **Ship before the next batch.** The ledger row is not done until its commit
+   is at its ceiling and proven, or its proof is recorded as proof-pending, or it is set aside (SKILL.md Phase 4 rule 9).
