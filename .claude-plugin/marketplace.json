@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "goodnight-alchemist",
+  "description": "Hand your project over at bedtime and find it shipped in the morning.",
+  "owner": {
+    "name": "Dibyajyoti",
+    "url": "https://github.com/dibyajyoti92"
+  },
+  "plugins": [
+    {
+      "name": "goodnight-alchemist",
+      "description": "Overnight multi-agent build protocol that paces itself across usage limits and stops when you tell it to.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}

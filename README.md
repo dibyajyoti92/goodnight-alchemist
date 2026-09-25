@@ -40,14 +40,23 @@ The second thing it does is **stop**. An agent that can work unattended for eigh
 
 ## Install
 
-Drop the folder into either location:
+**As a plugin** — two commands inside Claude Code, and `/plugin` keeps it updated:
+
+```
+/plugin marketplace add dibyajyoti92/goodnight-alchemist
+/plugin install goodnight-alchemist@goodnight-alchemist
+```
+
+**Or by hand** — copy the skill folder into your skills directory:
 
 ```bash
+git clone https://github.com/dibyajyoti92/goodnight-alchemist /tmp/goodnight-alchemist
+
 # available in every project
-git clone https://github.com/dibyajyoti92/goodnight-alchemist ~/.claude/skills/goodnight-alchemist
+cp -r /tmp/goodnight-alchemist/skills/goodnight-alchemist ~/.claude/skills/
 
 # or scoped to one project (commit it if your team wants it too)
-git clone https://github.com/dibyajyoti92/goodnight-alchemist .claude/skills/goodnight-alchemist
+cp -r /tmp/goodnight-alchemist/skills/goodnight-alchemist .claude/skills/
 ```
 
 Then start a session and say **"goodnight alchemist"** — or just *"I'm going to bed, keep building"*. It triggers on the intent, not only on the name.
@@ -86,13 +95,14 @@ The protocol takes the strict reading by default, and says so out loud at the ha
 
 | Path | What it is |
 |---|---|
-| `SKILL.md` | The protocol — seven phases, from the goodnight handshake to the morning report |
-| `references/keepalive.md` | The pacing algorithm, the deadline, and the three resume hooks |
-| `references/batch-loop.md` | Multi-agent mechanics: fan-out, reviewer prompts, recovering a dead run |
-| `references/ledger-template.md` | The ledger — the file a fresh session resumes from |
-| `references/local-verify.md` | Verifying in a real browser before shipping |
-| `references/project-notes/` | One file per repo, holding that repo's traps. Template and example inside |
-| `scripts/probe-live.sh` | Proves a deploy is live by grepping the bundle the server is actually serving |
+| `.claude-plugin/` | Plugin and marketplace manifests, so `/plugin` can install and update it |
+| `skills/goodnight-alchemist/SKILL.md` | The protocol — seven phases, from the goodnight handshake to the morning report |
+| `skills/goodnight-alchemist/references/keepalive.md` | The pacing algorithm, the deadline, and the three resume hooks |
+| `skills/goodnight-alchemist/references/batch-loop.md` | Multi-agent mechanics: fan-out, reviewer prompts, recovering a dead run |
+| `skills/goodnight-alchemist/references/ledger-template.md` | The ledger — the file a fresh session resumes from |
+| `skills/goodnight-alchemist/references/local-verify.md` | Verifying in a real browser before shipping |
+| `skills/goodnight-alchemist/references/project-notes/` | One file per repo, holding that repo's traps. Template and example inside |
+| `skills/goodnight-alchemist/scripts/probe-live.sh` | Proves a deploy is live by grepping the bundle the server is actually serving |
 
 The per-repo notes files are what make the second night in a codebase smarter than the first: the traps stop being rediscovered at 3am.
 

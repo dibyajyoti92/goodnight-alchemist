@@ -1,0 +1,21 @@
+{
+  "name": "goodnight-alchemist",
+  "version": "1.0.0",
+  "description": "Keeps building while you sleep. Multi-agent batches that each end shipped, usage-aware pacing that parks and resumes itself across limit resets on any plan, and a hard stop time you set.",
+  "author": {
+    "name": "Alchemist Inc",
+    "url": "https://alchemistinc.in"
+  },
+  "homepage": "https://github.com/dibyajyoti92/goodnight-alchemist",
+  "repository": "https://github.com/dibyajyoti92/goodnight-alchemist",
+  "license": "MIT",
+  "keywords": [
+    "overnight",
+    "autonomous",
+    "multi-agent",
+    "usage-limits",
+    "pacing",
+    "workflow",
+    "shipping"
+  ]
+}
