@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+
+- **Clearer about why it exists.** The plugin and marketplace descriptions, and the README, now lead with the point: a Claude subscription resets whether you use it or not, and this puts the hours you are away to work, inside your plan's limits. No change to how the skill behaves.
+
 ## 1.2.0
 
 - **Saying nothing never goes live.** If you don't mention going live at goodnight, every batch stays on a safe copy your live site ignores — even if you chose "put it live" at setup. That choice is now a preference: it makes the question suggest yes, but never acts on its own.

@@ -1,8 +1,8 @@
 {
   "name": "goodnight-alchemist",
   "displayName": "Goodnight Alchemist",
-  "version": "1.2.0",
-  "description": "Keeps building while you sleep. Multi-agent batches that each ship as far as you allow — a pushed branch by default, a pull request, or live — and prove it by commit. Usage-aware pacing that parks and resumes itself across limit resets on any Claude subscription, and a hard stop time you set.",
+  "version": "1.2.1",
+  "description": "Your Claude subscription resets whether you use it or not. This turns the hours you are asleep into shipped work: multi-agent batches paced to the usage you have left, parking and resuming itself across limit resets, shipping only as far as you allow, and stopping at the time you set.",
   "author": {
     "name": "Alchemist Inc",
     "url": "https://alchemistinc.in"

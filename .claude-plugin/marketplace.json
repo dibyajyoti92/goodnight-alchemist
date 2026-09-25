@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "goodnight-alchemist",
-  "description": "Hand your project over at bedtime and find it shipped in the morning — as far as you allowed, and proven.",
+  "description": "Put the Claude capacity you already pay for to work while you sleep.",
   "owner": {
     "name": "Dibyajyoti",
     "url": "https://github.com/dibyajyoti92"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "goodnight-alchemist",
-      "description": "Overnight multi-agent build protocol that ships as far as you allow and proves it, paces itself across usage limits, and stops when you tell it to.",
+      "description": "Turns the hours you are asleep into shipped work: batches paced to your remaining usage, resuming across limit resets, stopping when you say.",
       "source": "./",
       "category": "development"
     }
