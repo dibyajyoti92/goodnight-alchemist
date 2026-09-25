@@ -1,3 +1,5 @@
+![goodnight alchemist. A Claude Code skill: hand it over at bedtime, find it shipped by morning.](.github/banner.png)
+
 # Goodnight Alchemist
 
 **A Claude Code skill for handing your project over at bedtime and finding it shipped in the morning.**
