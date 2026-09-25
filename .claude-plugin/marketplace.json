@@ -10,7 +10,6 @@
     {
       "name": "goodnight-alchemist",
       "description": "Overnight multi-agent build protocol that ships as far as you allow and proves it, paces itself across usage limits, and stops when you tell it to.",
-      "version": "1.1.0",
       "source": "./",
       "category": "development"
     }
