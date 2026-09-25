@@ -66,14 +66,16 @@ mid-task gets asked **now**, in one message, or decided by a stated default.
 
    | The user said | Level |
    |---|---|
-   | nothing, or "commit and push" | L1 pushed |
+   | nothing about going live, or "commit and push" | L1 pushed |
    | "don't push" | L0 committed |
    | "open a PR", "don't touch main" | L2 review |
    | "push to main", "merge" | L3 default branch |
    | "publish", "deploy", "take it live", "live by morning", "full rights" | L4 publish, as far as the setup allows |
 
-   Saying nothing takes the project notes' default ceiling, else the profile's
-   standing default, else L1 — stated back either way. Last night's level is
+   **Saying nothing about going live never goes live.** It means L1, or a
+   stored default from the project notes or profile only if that default is
+   not live (L0–L2). A stored live choice (L3–L4) never applies on its own: it
+   only shapes the go-live question in step 5. Last night's level is
    information only ("last time: L4"), never applied. **Ceiling = min(this
    run's grant, the setup's cap).** Paid actions need a cap: tonight's words,
    else the notes' per-night cap, quoted back. Production-state changes need
@@ -105,7 +107,13 @@ mid-task gets asked **now**, in one message, or decided by a stated default.
    updates the ledger.
 5. **The handshake — one message, at most five plain lines (no branch, CI,
    SHA or level names; first-run questions go below them, each with its
-   default), never ending on a question:** **Setup** with its evidence ·
+   default), never waiting on a question.** When the user said nothing about
+   going live, the Ship line **asks explicitly**, and work starts anyway on the
+   safe default: "Should anything go live tonight? Until you say so, every
+   batch stays on a safe copy your live site ignores." (With a stored live
+   preference: "At setup you said you like it live — shall I put tonight's work
+   live too? Until you say yes, it stays on a safe copy.") A yes later in the
+   night raises the ceiling from the next batch, like any override. The lines: **Setup** with its evidence ·
    **Ship**: the level in plain words, plus the phrase that raises it ("each
    batch is saved where your live site ignores it; say 'take it live' and I'll
    publish from the next batch") · **Stop time and spend** · **Your side**:
@@ -233,7 +241,7 @@ endpoint returning it; `scripts/probe-live.sh` with a marker
 the probe on a string both builds share; for packages and CLIs, pack, install
 into a temp directory, golden run. Prove once, then move on — no polling.
 
-1. **With no stored default, L1** — L0 when there is no remote, when a
+1. **Saying nothing about going live means L1** (Phase 0 step 1) — L0 when there is no remote, when a
    workflow deploys or publishes on a push to any branch, or when pre-flight
    shows credentials would prompt.
 2. **The grant covers this run only** — a hook never raises the ceiling, and a
@@ -296,6 +304,9 @@ tracked there (`docs/overnight/<date>-morning-report.md`) and in chat:
 ```
 <first line: per batch — its level, its commit, and the one step left
  ("merge PR #12", "press Publish", "nothing, it's live")>
+<if nothing went live because the user never said so, say it plainly on the
+ next line: "Nothing went live — you didn't ask me to. To put it live: <the one
+ step>.">
 
 **Setup questions still open** — unanswered onboarding questions, if any.
 **What shipped** — per batch, in the user's terms, not file names.

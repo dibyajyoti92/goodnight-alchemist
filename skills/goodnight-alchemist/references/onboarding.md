@@ -183,9 +183,12 @@ sure" (→ cap L1).
 - "I'm not sure" → L1 (L2 on a team repo). Say: "Then I'll keep it safe and off
   your live site. Say 'take it live' on any night to go further."
 
-This is the project's default ceiling, used on nights the user says nothing and
-quoted back every time. Each night's own words still change it, for that night
-only.
+This is the project's default ceiling, quoted back every night. A non-live
+answer (L0–L2) is used on nights the user says nothing. **"Put it live" is
+never applied on its own**: it is stored as a preference, and on nights the
+user says nothing the handshake asks "At setup you said you like it live — shall
+I put tonight's work live too?" while work starts on L1. Each night's own words
+still change it, for that night only.
 
 **3. Money beyond the Claude subscription** → `## Costs`
 
@@ -270,8 +273,10 @@ only; nothing about a repo.
 Updated: <date>
 
 ## Standing defaults
-- Default ceiling when I say nothing: <not set → L1 | L0–L4> — set only when the
-  user asks for one; quoted back every night, never applied silently
+- Default ceiling when I say nothing: <not set → L1 | L0–L2 | live preference> —
+  set only when the user asks for one; quoted back every night. A live
+  preference is never applied silently: it only makes the go-live question
+  suggest yes
 - Tell me it's done by: <notification | report only>
 - Usual wake time: <HH:MM, time zone | not recorded> — suggests a stop time;
   never stored as one
@@ -315,7 +320,7 @@ folder or in git.
 - A push to the default branch triggers: <what fires>
 - Undo: <how to roll back> (none known → cap L2)
 - Never here: <ship actions off limits in this repo>
-- Default ceiling: <L0–L4> (answered <date>) — used when the user says nothing
+- Default ceiling: <L0–L2 | live preference> (answered <date>) — L0–L2 is used when the user says nothing; a live preference only shapes the go-live question
 - Last night: <level, date> — information only, never applied
 
 ## Costs
@@ -354,7 +359,7 @@ Example, for a fictional repo:
 - Undo: `vercel rollback`, or promote the previous deployment in the dashboard
 - Never here: applying migrations unattended — a committed `.sql` file is a
   proposal; verify afterwards that the object exists and `anon` cannot touch it
-- Default ceiling: L4 (answered 2026-09-02, "put it live")
+- Default ceiling: live preference (answered 2026-09-02, "put it live") — asked each night, never applied silently
 - Last night: L4, 2026-09-24 — information only
 
 ## Costs

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+- **Saying nothing never goes live.** If you don't mention going live at goodnight, every batch stays on a safe copy your live site ignores — even if you chose "put it live" at setup. That choice is now a preference: it makes the question suggest yes, but never acts on its own.
+- **It asks, plainly, every time.** When you haven't said, the goodnight message asks "Should anything go live tonight?" and starts work on the safe copy meanwhile. Say yes at any point and it goes live from the next batch.
+- **The morning report says so.** If nothing went live because you didn't ask, the report's second line says exactly that, with the one step to put it live.
+
 ## 1.1.0
 
 - **Behaviour change: the default is now a pushed branch, not live.** When you say nothing (and chose nothing else at setup), each batch is pushed to its own `goodnight/<date>-<slug>` branch for you to check in the morning. Say "push it live", "take it live" or "full rights" and you get the 1.0 flow back: main, publish, and a live check.
