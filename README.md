@@ -48,7 +48,7 @@ The second thing it does is **stop**. An agent that can work unattended for eigh
 
 ## Install
 
-**As a plugin** — two commands inside Claude Code, and `/plugin` keeps it updated:
+**As a plugin** (recommended, it is the only install that can update) — two commands inside Claude Code:
 
 ```
 /plugin marketplace add dibyajyoti92/goodnight-alchemist
@@ -70,6 +70,32 @@ cp -r /tmp/goodnight-alchemist/skills/goodnight-alchemist .claude/skills/
 Then start a session and say **"goodnight alchemist"** — or just *"I'm going to bed, keep building"*. It triggers on the intent, not only on the name.
 
 No config files to edit — the first run asks what it needs. `scripts/probe-live.sh` wants `bash` and `curl`, and only if you use it.
+
+## Updating
+
+Claude Code does not update plugins from third-party marketplaces on its own until you switch it on. **Do this once** and every new version arrives by itself: run `/plugin`, open **Marketplaces**, select **goodnight-alchemist**, and choose **Enable auto-update**.
+
+To update right now instead, inside Claude Code:
+
+```
+/plugin marketplace update goodnight-alchemist
+```
+
+then in `/plugin` go to **Installed** › **goodnight-alchemist** › **Update now**, and run `/reload-plugins`. Or from a terminal:
+
+```bash
+claude plugin marketplace update goodnight-alchemist
+claude plugin update goodnight-alchemist@goodnight-alchemist
+```
+
+**Installed by hand?** A copied folder never updates. Replace it with the latest version (your answers in `~/.claude/goodnight/` are kept, they live outside the skill folder). Coming from 1.0 with notes in the skill's `references/project-notes/`? Say "set up goodnight alchemist" once in each of those repos first, so the notes move out before the folder is deleted.
+
+```bash
+rm -rf /tmp/goodnight-alchemist && git clone https://github.com/dibyajyoti92/goodnight-alchemist /tmp/goodnight-alchemist
+rm -rf ~/.claude/skills/goodnight-alchemist && cp -r /tmp/goodnight-alchemist/skills/goodnight-alchemist ~/.claude/skills/
+```
+
+or switch to the plugin install above, so later updates arrive by themselves. To hear about new versions, watch this repo on GitHub for **Releases**; what changed is in [CHANGELOG.md](CHANGELOG.md).
 
 ## First run
 
