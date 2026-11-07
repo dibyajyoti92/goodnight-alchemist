@@ -42,7 +42,7 @@ The second thing it does is **stop**. An agent that can work unattended for eigh
 
 **Reviews before it ships.** Two read-only reviewers per batch: one against the spec and against behaviour that silently disappeared, one for real defects with a concrete failure scenario attached. The master triages their findings itself, drops the wrong ones, and pulls out anything whose blast radius exceeds the task — a database-wide grant change, a dependency bump, a schema migration — for you to decide in the morning. It also re-runs the tests an agent *claims* passed, because a confident report over a red repo is the classic way broken code reaches production.
 
-**Never forks itself.** Resume hooks check a `busy-until` lease in the ledger before they resume anything. Two sessions editing one repo is the worst outcome in the whole protocol; idling is not.
+**Never forks itself.** Resume hooks check a `busy-until` lease in the ledger before they resume anything, and the ledger names the one session that owns the run — any other session that wakes up stands down. Two sessions editing one repo is the worst outcome in the whole protocol; idling is not.
 
 **Leaves a ledger, not a mystery.** Every decision, every park, every measured cost, every commit and how far it shipped goes in a file a fresh session can resume from alone.
 
@@ -101,7 +101,7 @@ Your answers live in `~/.claude/goodnight/` — a `profile.md` for you, and one 
 |---|---|
 | **Claude desktop app** | Fully supported: usage meter, resume hooks including the hourly fresh-session safety net, keep-awake, browser checks, a phone notification when it is done (unless you asked for a report only). |
 | **Terminal CLI** | Supported, with fallbacks. No usage meter, so it cannot tell a subscription from a per-token account: it stops after 4 batches unless you name a dollar ceiling, or tell it this is a subscription (then small batches, with the stop time as the limit). No fresh-session safety net (it hands you the one-line OS scheduler entry to add yourself if you want one). No built-in keep-awake: keep the machine and the terminal up (on macOS and Linux it uses the system's own sleep blocker). |
-| **Claude Code on the web** | Supported, with fallbacks. No usage meter (same 4-batch default as the CLI unless you name a dollar ceiling or say it's a subscription), no fresh-session safety net, and no parking across a limit reset — it wraps up instead. The ledger lives on the run's branch. Nothing to keep awake. |
+| **Claude Code on the web** | Supported, with fallbacks. No usage meter (same 4-batch default as the CLI unless you name a dollar ceiling or say it's a subscription), no fresh-session safety net, and no parking across a limit reset — it wraps up instead. The ledger lives on its own branch, pushed as the night goes. Nothing to keep awake. |
 
 **Accounts.** Any Claude subscription. Per-token accounts — an API key, Bedrock, Vertex, a gateway — report no usage window, so the night is paced by a dollar ceiling you name, or failing that a small batch cap stated at the handshake.
 

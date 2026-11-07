@@ -8,8 +8,9 @@ half-finished.
 
 **N is derived, never assumed.** `references/keepalive.md` §2 measures what a
 task costs on this plan from the run's own first batch, and sizes every later
-batch from the room left in the tightest window: `min(6, floor(room × 0.6 /
-cost_per_task))`. On a large plan that lands at 5–6 tasks and eight
+batch from the room left in the tightest window: `min(6, floor(room × 0.75 /
+cost_per_task))`, where `cost_per_task` already includes each task's share of
+review and fixes. On a large plan that lands at 5–6 tasks and eight
 batches a night; on a small one it lands at 1–2 tasks and three or four
 batches, with the same structure and the same guarantee. A one-task batch is a
 legitimate batch — it still gets a review, still ships; zero is not — park or

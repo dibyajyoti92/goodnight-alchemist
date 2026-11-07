@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.2
+
+- **One run, one session.** The ledger now names the session that owns the run. A session that was stuck and wakes up after the safety net replaced it sees it has been taken over and stands down, instead of working beside its replacement.
+- **A long batch no longer looks dead.** The heartbeat keeps itself fresh while a batch is still running in the background, so the hourly safety net can't start a second run on top of it.
+- **Clean restarts.** A session that picks up a crashed run first stashes any half-finished edits (listed in the morning report) and redoes that batch from a clean state. It sets up its own heartbeat and wrap-up, so it can still pause for a limit reset.
+- **The safety net is set up every night.** Its scheduled task is now named per night, so a task left over from a crashed night can't block tonight's.
+- **No surprise overage.** Paid extra usage is treated as money: left out of the pacing, never spent unless you grant an amount, and reported if anything was used.
+- **Truer batch sizing.** The first batch is measured with the same review a normal batch gets, and the sizing no longer counts review cost twice. The worked example's arithmetic is corrected.
+- **Keep-awake on macOS** now runs until the stop time, instead of tracking a `claude` process that might belong to another session.
+- **A ledger kept in git gets its own branch**, so it never moves the commit being checked or ends up on your main branch.
+- **`probe-live.sh`** follows redirects, handles routes that already have a query string, and reports a site it can't reach as `FETCH-FAILED` (exit 2) rather than "marker not found".
+
 ## 1.2.1
 
 - **Clearer about why it exists.** The plugin and marketplace descriptions, and the README, now lead with the point: a Claude subscription resets whether you use it or not, and this puts the hours you are away to work, inside your plan's limits. No change to how the skill behaves.

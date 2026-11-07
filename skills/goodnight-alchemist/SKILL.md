@@ -1,6 +1,6 @@
 ---
 name: goodnight-alchemist
-description: The overnight, multi-agent build protocol for any project, on any Claude subscription. One master agent owns a ledger, fans work out to implementer and reviewer subagents in small batches, sizes each batch to the usage window left so the run glides across limit resets without a human restarting it, ships each batch as far as the user allows — a pushed branch by default, a pull request, or live — and proves it by commit, stops at a deadline the user sets, and leaves a morning report with a "pending on you" list. Use this whenever the user says "goodnight alchemist", "I'm going to bed, keep building", "keep the development going until morning", "finish this overnight", "run it through the night", "have it live by morning", "work while I sleep", or hands over a brief and says to take it to production unattended — even if they don't name the skill. Also use it when they say "set up goodnight alchemist" or "configure goodnight alchemist" (first-run setup only, no overnight run).
+description: The overnight, multi-agent build protocol for any project, on any Claude subscription. A master agent owns a ledger and runs implementer and reviewer subagents in small batches sized to the usage window left, so the run carries on across limit resets by itself; ships each batch only as far as the user allows (a pushed branch by default, a pull request, or live) and proves it by commit; stops at the user's deadline; and leaves a morning report with a "pending on you" list. Use whenever the user says "goodnight alchemist", "I'm going to bed, keep building", "keep the development going until morning", "finish this overnight", "run it through the night", "have it live by morning", "work while I sleep", or hands over a brief to take to production unattended, even without naming the skill. Also for "set up goodnight alchemist" or "configure goodnight alchemist" (first-run setup only, no overnight run).
 ---
 
 # Goodnight Alchemist
@@ -146,10 +146,14 @@ mid-task gets asked **now**, in one message, or decided by a stated default.
    "verified". Group into **batches split by file ownership**; batch size comes
    from Phase 2.
 5. **Open the ledger** — copy `references/ledger-template.md` to the absolute
-   ledger path, or to `docs/overnight/<date>-run.md` on the run branch when the
-   user wants it in git or the session runs in the cloud. **Never the session
-   scratchpad**: a resume hook starts a *different* session that cannot read
-   it. The ledger is the resume point — a fresh session with no memory of
+   ledger path. When the user wants it in git, or the session runs in the
+   cloud, it goes on its **own branch** instead, never the run branch: ledger
+   commits there would move the SHA being proven and ride along to the default
+   branch at L3. `git worktree add --orphan -b goodnight/<date>-<slug>-ledger
+   <path beside the run worktree>` (git 2.42+), the ledger at
+   `docs/overnight/<date>-run.md` in it, committed and pushed at every phase
+   change. **Never the session scratchpad**: a resume hook starts a
+   *different* session that cannot read it. The ledger is the resume point — a fresh session with no memory of
    tonight must be able to continue from it alone.
 
 ## Phase 2 — Keep-alive: pacing and the resume hooks
@@ -168,15 +172,20 @@ Full mechanics in `references/keepalive.md`. The short version:
   reset. **Park only when the reset comes before `stop-at`** and Hook A exists;
   otherwise wrap up and say so.
 - **Keep a reserve** for the report and the user's own morning.
-- **Hook A — heartbeat (`CronCreate`, where the harness has it)**, ~every 25
-  minutes: resumes *this* conversation if nothing is running. Dies with the
-  session.
+- **Own the run.** Write a fresh random token to the ledger's `owner:` line and
+  put it in your own Hook A and Hook C prompts; re-read it before every batch,
+  commit and ship step, and stand down the moment it is not yours
+  (keepalive.md §5).
+- **Hook A — heartbeat (`CronCreate`, where the harness has it)**, every 20
+  minutes: resumes *this* conversation if nothing is running, and keeps the
+  heartbeat fresh while a background batch is. Dies with the session.
 - **Hook B — hourly fresh-session safety net (the scheduled-task tool, where
   the harness has it)**: a self-contained prompt quoting the ceiling, resuming
   **only if** the run has stalled. It survives the app closing, so it also
   writes the report when everything else died. Missing or blocked, it is "not
   armed": never work around it; put the exact OS-scheduler line under
-  *Pending on you*.
+  *Pending on you*. A session Hook B starts takes over the `owner:` line and
+  arms its own Hook A and Hook C — never a second Hook B.
 - **Hook C — wrap-up (`CronCreate`, where the harness has it)**, one-shot ~20
   minutes before `stop-at`. Without it, check `stop-at` before every batch and
   write the report in-turn.
@@ -298,8 +307,9 @@ seeding keys belong in the project notes.
 
 Set the ledger to `phase: DONE`, delete every hook, update the project notes
 (Ship, Traps, tonight's ceiling as information) and memory with facts not
-already in the code, then write the report — in the repo when the work is
-tracked there (`docs/overnight/<date>-morning-report.md`) and in chat:
+already in the code, then write the report — beside the ledger (on the ledger
+branch, `docs/overnight/<date>-morning-report.md`, when the ledger is in git)
+and in chat:
 
 ```
 <first line: per batch — its level, its commit, and the one step left
@@ -348,6 +358,15 @@ ledger's Grant-line ceiling to
   branch `goodnight/<date>-b<n>` off the run-branch tip, push it, return to the
   run branch (so it never rides along with a later promotion), record what
   failed with its output, and put the decision under *Pending on you*.
+- **Resuming after a crash** (any hook that resumes, any session that takes
+  over) → before planning anything, compare `HEAD` with the last batch commit
+  the ledger records, and run `git status`:
+  - `HEAD` ahead of it → that commit was made but never recorded: re-gate it,
+    then ship and record it as usual.
+  - Uncommitted changes → the dead batch's half-finished edits. Never build on
+    them: `git stash push --include-untracked -m "goodnight orphan b<n>
+    <time>"`, log the stash in the ledger and under *Pending on you*, and
+    re-run that batch from a clean tree (smaller, if the meter says so).
 - **A subagent or workflow dies mid-run** → resume it (`Workflow` with
   `scriptPath` + `resumeFromRunId`, same session only) or re-run only the dead
   task — never the whole batch.

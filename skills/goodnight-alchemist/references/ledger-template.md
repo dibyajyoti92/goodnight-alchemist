@@ -26,6 +26,8 @@ Hooks: A heartbeat cron <id or "not armed: reason"> · B scheduled task
 
 ## Status (update at EVERY phase change and every processed report)
 
+owner: <random token of the session running this — every session checks it
+  before each batch, commit and ship step, and stands down when it is not its own>
 last-heartbeat: <ISO time with offset>
 busy-until: <ISO time with offset — written BEFORE every fan-out and every
   park; no hook resumes this run while it is in the future. Cleared when the
